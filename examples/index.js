@@ -1,4 +1,4 @@
-const { populate } = require('populate-urls');
+const { populate } = require('../');
 
 let movies = "https://swapi.co/api/films"
 

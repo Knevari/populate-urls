@@ -1,7 +1,8 @@
 const axios = require('axios');
 
-async function populate(dataContainingUrls) {
-  // Polyfill para Array.isArray
+async function populate(urls, requestType = "GET", config = null) {
+  requestType = requestType.toLowerCase();
+
   if(!Array.isArray) {
     Array.isArray = function(arg) {
       return Object.prototype.toString.call(arg) === "[object Array]";
@@ -14,13 +15,17 @@ async function populate(dataContainingUrls) {
      return regex.exec(val)
   }
 
-  // Popular arrays
-  if(Array.isArray(dataContainingUrls)) {
-    const items = dataContainingUrls.slice()
+  if(Array.isArray(urls)) {
+    const items = urls.slice()
 
     for(let index in items) {
       if(matchUrl(items[index])) {
-        let data = await (await axios.get(items[index])).data
+        // let data = await (await axios[requestType](items[index], config)).data
+        let data = await (await axios({
+          method: requestType,
+          url: items[index],
+          ...config
+        })).data
         items[index] = data
       }
 
@@ -32,17 +37,19 @@ async function populate(dataContainingUrls) {
     return items
   }
 
-  // Popular strings
-  if(typeof dataContainingUrls === "string") {
-    if(matchUrl(dataContainingUrls)) {
-      const data = await (await axios.get(dataContainingUrls)).data
+  if(typeof urls === "string") {
+    if(matchUrl(urls)) {
+      const data = await (await axios({
+        method: requestType,
+        url: urls,
+        ...config
+      })).data
       return data
     }
   }
 
-  // Popular objetos
-  if(typeof dataContainingUrls === "object" && dataContainingUrls !== null) {
-    const obj = Object.assign({}, dataContainingUrls)
+  if(typeof urls === "object" && urls !== null) {
+    const obj = Object.assign({}, urls)
 
     for(let x in obj) {
       obj[x] = await populate(obj[x])
@@ -51,8 +58,8 @@ async function populate(dataContainingUrls) {
     return obj
   }
 
-  // Retorna objeto original
-  return dataContainingUrls;
+  // Retorns the original object
+  return urls;
 }
 
 exports.populate = populate;

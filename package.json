@@ -23,7 +23,7 @@
   "_shasum": "72e42df66be4fb057cfcf8c29948b6dc4e1ac652",
   "_spec": "populate-urls",
   "_where": "/var/www/html/populate",
-  "author": "",
+  "author": "Knevari",
   "bundleDependencies": false,
   "dependencies": {
     "axios": "^0.18.0"
@@ -40,5 +40,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "2.0.5"
+  "repository": "github:Knevari/populate-urls",
+  "version": "2.0.6"
 }

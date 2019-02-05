@@ -6,11 +6,18 @@ A simple package for populating data of any kind of value if it matches a URL
 
 npm install --save populate-urls
 
-## Example
+## Examples
+
+Require it by doing:
 
 ```
 const { populate } = require('populate-urls');
+```
 
+You can pass any kind of value that matches an Object, String or Array to the populate function
+
+
+```
 let movies = "https://swapi.co/api/films"
 
 let characters = [
@@ -30,7 +37,11 @@ let planets = {
   "Tatooine": "https://swapi.co/api/planets/1",
   "Alderaan": "https://swapi.co/api/planets/2"
 }
+```
 
+And it's gonna return the populated data for you
+
+```
 async function loadStarWarsData() {
   movies = await populate(movies);
   characters = await populate(characters);
@@ -39,7 +50,7 @@ async function loadStarWarsData() {
   console.log("Movies: ");
   console.log(movies);
 
-  console.log("Characters");
+  console.log("Characters: ");
   console.log(characters);
 
   console.log("Planets: ");
@@ -48,4 +59,19 @@ async function loadStarWarsData() {
 
 loadStarWarsData();
 
+```
+
+If you need to, you can specify the request type and a config object in the arguments
+
+```
+populate("https://api.example/food/add", "POST", {
+  headers: {
+    "Authorization": "{{token}}"
+  },
+  data: {
+    food: {
+      name: "Potato"
+    }
+  }
+})
 ```
